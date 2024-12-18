@@ -26,7 +26,7 @@ services:
         REDDIT_USERNAME: foo
         REDDIT_PASSWORD: bar
         SUBREDDIT_TO_WATCH: IAmA
-        COMMENT_INCLUDES: foo
+        COMMENT_REGEX: ^abc$
         POLL_RATE: 10000 #optional: how frequent we wanna get data from reddit in milisseconds. Defaults to 10 seconds
         DISCORD_WEBHOOK_URL: https://discord.com/api/webhooks/123456/abcdef
     restart: always
