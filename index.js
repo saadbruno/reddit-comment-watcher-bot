@@ -3,6 +3,13 @@ const Snoowrap = require(`snoowrap`);
 const { CommentStream } = require(`snoostorm`);
 const { sendDiscordWebhook } = require(`./modules/discord`);
 
+console.log(`
+    ========= Reddit Watcher Bot =========
+    Subreddit:      r/${process.env.SUBREDDIT_TO_WATCH}
+    Comment Regex:  ${process.env.COMMENT_REGEX}
+    ======================================
+`);
+
 // Initialize snoowrap with credentials
 const r = new Snoowrap({
     userAgent: `nodejs-reddit-bot`,
@@ -19,7 +26,7 @@ const client = new Snoowrap(r);
 const comments = new CommentStream(client, {
     subreddit: process.env.SUBREDDIT_TO_WATCH,
     limit: 10,
-    pollTime: process.env.POLL_RATE || 10000,
+    pollTime: parseInt(process.env.POLL_RATE) || 10000,
 });
 
 comments.on("item", comment => {
@@ -28,7 +35,7 @@ comments.on("item", comment => {
     const regex = new RegExp(process.env.COMMENT_REGEX);
 
     // If the comment doesn't contain the string we're interested in, just return.
-    if(!regex.test(comment.body)) return;
+    if (!regex.test(comment.body)) return;
 
     console.log(`===== Interesting comment: =====\n${comment.body}\n================================\n`);
 
@@ -37,7 +44,7 @@ comments.on("item", comment => {
         `New comment in ${comment.link_title}`,
         `${comment.body}`,
         `${comment.link_permalink}${comment.id}`
-      );
+    );
 
 });
 
