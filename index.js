@@ -25,8 +25,10 @@ const comments = new CommentStream(client, {
 comments.on("item", comment => {
     console.log(`New comment on thread "${comment.link_title}": ${comment.link_permalink}${comment.id}`);
 
+    const regex = new RegExp(process.env.COMMENT_REGEX);
+
     // If the comment doesn't contain the string we're interested in, just return.
-    if (!comment.body.includes(process.env.COMMENT_INCLUDES)) return;
+    if(!regex.test(comment.body)) return;
 
     console.log(`===== Interesting comment: =====\n${comment.body}\n================================\n`);
 
